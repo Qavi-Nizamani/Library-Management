@@ -1,0 +1,14 @@
+extends base.pug
+block content
+    form.my-5.mx-5(action="/login" method="POST")
+        .mb-3
+            label.form-label(for='email') Email address
+            input#email.form-control(type='email' , name="email", aria-describedby='emailHelp')
+            #emailHelp.form-text We&apos;ll never share your email with anyone else.
+        .mb-3
+            label.form-label(for='password') Password
+            input#password.form-control(type='password' , name="password")
+        .mb-3.form-check
+            input#types.form-check-input(type='checkbox')
+            label.form-check-label(for='types') Check me out
+        button.btn.btn-primary(type='submit') Submit

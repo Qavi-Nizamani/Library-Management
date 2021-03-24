@@ -1,1 +1,48 @@
 extends base.pug
+block scripts 
+    script(src="../static/js/index.js")
+block content 
+    - var rows = [];
+    - rows= rows;
+    - var isAdmin= isAdmin;
+
+    if (isAdmin)
+        h2 Welcome admin 
+
+        
+    else if (isUser)
+        h2= message
+    else 
+        section.container.my-4
+            h2 Sign Up to get more amazing features...
+            form.row(action="/", method="post")
+                .col-md-3
+                    label.form-label(for='bookName') Book Name
+                    input#bookName.form-control(type='text', name="bookName", aria-describedby='emailHelp')
+                    #emailHelp.form-text We&apos;ll never share your email with anyone else.
+                .col-md-3
+                    label.form-label(for='bookAuther') Auther
+                    input#bookAuther.form-control(type='text', name="bookAuther")
+                .col-md-3
+                    label.form-label(for='language') Language
+                    input#language.form-control(type='text', name="language")
+                .d-flex.col-md-3.text-center.justify-content-center.align-items-center
+                    button.btn.btn-primary(type='submit') Submit
+            hr
+            table.table
+                thead
+                    tr
+                        th(scope='col') Book
+                        th(scope='col') Auther
+                        th(scope='col') Language
+                tbody
+                    tr
+                        td Latifa
+                        td Shah Abdul Latif
+                        td Sindhi
+                each row in rows
+                    tr
+                        td= row.bookName
+                        td= row.bookAuther
+                        td= row.language
+

@@ -1,0 +1,32 @@
+extends base.pug
+block content
+    form.row.g-3.needs-validation.mx-5.my-5(action="/signup" ,method="POST" ,novalidate='')
+        .col-md-4
+            label.form-label(for='name') Name
+            input#name.form-control(type='text', name="name", value='Mark', required='')
+            .valid-feedback
+                | Looks good!
+        .col-md-4
+            label.form-label(for='phone') Phone
+            input#phone.form-control(type='text', name="phone", value='Otto', required='')
+            .valid-feedback
+                | Looks good!
+        .col-md-6
+            label.form-label(for='email') Email
+            .input-group.has-validation
+                span#inputGroupPrepend.input-group-text @
+                input#email.form-control(type='email', name="email" ,aria-describedby='inputGroupPrepend', required='')
+            .invalid-feedback
+                | Please choose a username.
+        .col-md-6
+            label.form-label(for='address') Address
+            input#address.form-control(type='text', name="address" ,required='')
+            .invalid-feedback
+                | Please provide a valid city.
+        .col-md-6
+            label.form-label(for='password') Password
+            input#password.form-control(type='text', name="password" ,required='')
+            .invalid-feedback
+                | Please provide a valid city.
+        .col-12
+            button.btn.btn-primary(type='submit') Submit form

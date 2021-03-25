@@ -1,3 +1,4 @@
+const { json } = require("body-parser");
 const express = require("express");
 const User = require("../models/users");
 const router = express.Router();
@@ -10,6 +11,7 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   login(req, res);
 });
+
 function login(req, res) {
   //GETTING USER INFO FROM MONGODB
   User.find(req.body, (err, users) => {

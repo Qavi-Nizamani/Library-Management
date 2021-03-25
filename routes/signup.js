@@ -7,16 +7,10 @@ router.get("/", (req, res) => {
 });
 
 //Post methods
-router.post("/signup", (req, res) => {
+router.post("/signup", async (req, res) => {
   const myData = new User(req.body);
-  myData
-    .save()
-    .then(() => {
-      res.send("data saved: ");
-    })
-    .catch(() => {
-      res.status(400).send("error");
-    });
+  const newUser = await myData.save();
+  res.json(newUser);
 });
 
 module.exports = router;

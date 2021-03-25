@@ -4,13 +4,19 @@ const router = express.Router();
 router.use(express.urlencoded());
 
 router.get("/", (req, res) => {
-  res.status(200).render("home");
+  Book.find((err, data) => {
+    res.render("books");
+  });
 });
-
 router.post("/", async (req, res) => {
   const myData = new Book(req.body);
   const savedData = await myData.save();
-  res.render("home");
+  res.render("books");
+});
+router.get("/getBooks", (req, res) => {
+  Book.find((err, data) => {
+    res.json(data);
+  });
 });
 
 module.exports = router;

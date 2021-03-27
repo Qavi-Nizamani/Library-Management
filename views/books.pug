@@ -6,11 +6,10 @@ block content
     //- Section for adding a new book 
     section.container.my-4
         if(isAdmin)
-            form#myForm.row.needs-validation(action="/books", method="post",novalidate)
+            form#myForm.row.needs-validation.container.my-2(action="/books", method="post",novalidate)
                 .col-md-3
                     label.form-label(for='bookName') Book Name
                     input#bookName.form-control(type='text', name="bookName", aria-describedby='emailHelp' , required)
-                    #emailHelp.form-text We&apos;ll never share your email with anyone else.
                 .col-md-3
                     label.form-label(for='bookAuther') Auther
                     input#bookAuther.form-control(type='text', name="bookAuther" , required)
@@ -22,7 +21,7 @@ block content
         //- Table to show all the books
         .container.text-center 
             h2 All Books
-            table.my-3.table.table-light.table-striped
+            table.my-2.table.table-light.table-striped
                 thead
                     tr
                         th(scope='col') Book

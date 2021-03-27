@@ -1,8 +1,8 @@
 const express = require("express");
-const path = require("path");
 const app = express();
+const cookieParser = require("cookie-parser");
+const path = require("path");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 require("dotenv/config");
 
 //Setting up routes
@@ -10,7 +10,7 @@ const homeRoute = require("./routes/home");
 const loginRoute = require("./routes/login");
 const signupRoute = require("./routes/signup");
 const booksRoute = require("./routes/books");
-app.use(bodyParser.json());
+const logoutRoute = require("./routes/logout");
 //MONGOOSE SPECIFIC
 mongoose.connect(process.env.DB_CONNECTION, {
   useNewUrlParser: true,
@@ -19,17 +19,20 @@ mongoose.connect(process.env.DB_CONNECTION, {
 
 //EXPRESS SPECIFIC
 app.use("/static", express.static("static"));
-app.use(express.urlencoded());
-
+app.use(cookieParser());
 //PUG SPECIFIC
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 //END POINTS
 app.use("/", homeRoute);
 app.use("/login", loginRoute);
 app.use("/signup", signupRoute);
 app.use("/books", booksRoute);
+app.use("/logout", logoutRoute);
+
 //LISTENING SERVER
 app.listen(80, () => {
   console.log("listening");

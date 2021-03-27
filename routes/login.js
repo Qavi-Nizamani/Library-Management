@@ -1,8 +1,6 @@
-const { json } = require("body-parser");
 const express = require("express");
 const User = require("../models/users");
 const router = express.Router();
-router.use(express.urlencoded());
 
 router.get("/", (req, res) => {
   res.status(200).render("login");
@@ -14,33 +12,47 @@ router.post("/", (req, res) => {
 
 function login(req, res) {
   //GETTING USER INFO FROM MONGODB
-  User.find(req.body, (err, users) => {
-    //Fetching matched user
-    let isLoginSuccessful = false; //Make true if user matches
+  User.findOne({ email: req.body.email }, async (err, user) => {
     let params = { isAdmin: false, isUser: false, message: "" };
-    for (let user of users) {
-      //Iterate all users of USER MODEL
+    // TRY IF THE USER EXIST
+    try {
       if (
-        user.email === req.body.email && //Check if emails match or not
+        user.email === req.body.email && //Check if email matches or not.
         user.password === req.body.password // --------password------------
       ) {
         if (user.isAdmin === true) {
           //If the user is Admin
           params.isAdmin = true;
-          res.status(200).render("home", params);
+          const token = await user.generateAuthToken();
+          res.cookie("jwt", token, {
+            expires: new Date(Date.now() + 1000 * 300),
+            httpOnly: true,
+          });
+          res.status(201).render("home", params);
         } else {
+          // else this is normal user
           params.isUser = true;
           params.message = `Welcome ${user.name.toUpperCase()} To my First Backend Website `;
-          res.status(200).render("home", params);
+          const token = await user.generateAuthToken();
+          res.cookie("jwt", token);
+          res.status(201).render("home", params);
         }
       } else {
-        false;
+        // else log an error
+        params = {
+          error: "Email or Password is Wrong! Please enter the correct data.",
+        };
+        res.status(200).render("login", params);
       }
-    }
-    if (isLoginSuccessful) {
-    } else {
-      res.status(200).render("login");
+    } catch (error) {
+      // CATCH ERROR IF NO SUCH USER EXIST
+      params = {
+        error: "Email or Password is Wrong! Please enter the correct data.",
+      };
+      console.log("error catch block?");
+      res.status(200).render("login", params);
     }
   });
 }
+
 module.exports = router;

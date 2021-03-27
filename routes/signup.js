@@ -7,10 +7,15 @@ router.get("/", (req, res) => {
 });
 
 //Post methods
-router.post("/signup", async (req, res) => {
-  const myData = new User(req.body);
-  const newUser = await myData.save();
-  res.json(newUser);
+router.post("/", async (req, res) => {
+  try {
+    const user = new User(req.body);
+    await user.save();
+
+    res.status(201).render("login");
+  } catch (error) {
+    res.render("signup");
+  }
 });
 
 module.exports = router;

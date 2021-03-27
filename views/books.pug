@@ -5,27 +5,30 @@ block content
         h2= message
     //- Section for adding a new book 
     section.container.my-4
-        form#myForm.row.needs-validation(action="/books", method="post",novalidate)
-            .col-md-3
-                label.form-label(for='bookName') Book Name
-                input#bookName.form-control(type='text', name="bookName", aria-describedby='emailHelp' , required)
-                #emailHelp.form-text We&apos;ll never share your email with anyone else.
-            .col-md-3
-                label.form-label(for='bookAuther') Auther
-                input#bookAuther.form-control(type='text', name="bookAuther" , required)
-            .col-md-3
-                label.form-label(for='language') Language
-                input#language.form-control(type='text', name="language" , required)
-            .d-flex.col-md-3.text-center.justify-content-center.align-items-center
-                button#addBook.btn.btn-primary(type='submit') Submit
+        if(isAdmin)
+            form#myForm.row.needs-validation(action="/books", method="post",novalidate)
+                .col-md-3
+                    label.form-label(for='bookName') Book Name
+                    input#bookName.form-control(type='text', name="bookName", aria-describedby='emailHelp' , required)
+                    #emailHelp.form-text We&apos;ll never share your email with anyone else.
+                .col-md-3
+                    label.form-label(for='bookAuther') Auther
+                    input#bookAuther.form-control(type='text', name="bookAuther" , required)
+                .col-md-3
+                    label.form-label(for='language') Language
+                    input#language.form-control(type='text', name="language" , required)
+                .d-flex.col-md-3.text-center.justify-content-center.align-items-center
+                    button#addBook.btn.btn-primary(type='submit') Submit
         //- Table to show all the books
-        table.my-5.table
-            thead
-                tr
-                    th(scope='col') Book
-                    th(scope='col') Auther
-                    th(scope='col') Language
-            tbody#tBody
+        .container.text-center 
+            h2 All Books
+            table.my-3.table.table-light.table-striped
+                thead
+                    tr
+                        th(scope='col') Book
+                        th(scope='col') Auther
+                        th(scope='col') Language
+                tbody#tBody
 
 //- bootstrap and custom scripts
 block scripts

@@ -1,14 +1,20 @@
 extends base.pug
 block content
-    form.my-5.mx-5(action="/login" method="POST")
+    form.my-2.mx-5.needs-validation(action="/login" method="POST", novalidate)
+        div
+            p.red= error
         .mb-3
             label.form-label(for='email') Email address
-            input#email.form-control(type='email' , name="email", aria-describedby='emailHelp')
+            input#email.form-control(type='email' , name="email", aria-describedby='emailHelp' required)
             #emailHelp.form-text We&apos;ll never share your email with anyone else.
         .mb-3
             label.form-label(for='password') Password
-            input#password.form-control(type='password' , name="password")
+            input#password.form-control(type='password' , name="password" required)
         .mb-3.form-check
             input#types.form-check-input(type='checkbox')
-            label.form-check-label(for='types') Check me out
+            label.form-check-label(for='types') Save Password
         button.btn.btn-primary(type='submit') Submit
+//- bootstrap and custom scripts
+block scripts
+    script(src="../static/js/books.js") 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>

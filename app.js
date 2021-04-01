@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const AppError = require("./middleware/AppError");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -9,8 +10,10 @@ require("dotenv/config");
 const homeRoute = require("./routes/home");
 const loginRoute = require("./routes/login");
 const signupRoute = require("./routes/signup");
-const booksRoute = require("./routes/books");
 const logoutRoute = require("./routes/logout");
+const usersRoute = require("./routes/users");
+const booksRoute = require("./routes/books");
+
 //MONGOOSE SPECIFIC
 mongoose.connect(process.env.DB_CONNECTION, {
   useNewUrlParser: true,
@@ -32,6 +35,24 @@ app.use("/login", loginRoute);
 app.use("/signup", signupRoute);
 app.use("/books", booksRoute);
 app.use("/logout", logoutRoute);
+app.use("/users", usersRoute);
+
+app.get("/admin", (req, res) => {
+  throw new AppError("You are not an Admin!", 403);
+});
+app.get("/Qavi", (req, res) => {
+  asdfsdqavi.namafasde();
+});
+
+app.get("*", (req, res) => {
+  throw new AppError("Error! Page Not Found..", 404, "404 PAGE NOT FOUND!");
+});
+
+//UNIVERSAL ERROR HANDLER
+app.use((err, req, res, next) => {
+  const { message = "Something went wrong!", status = 500 } = err;
+  res.status(status).send(message);
+});
 
 //LISTENING SERVER
 app.listen(80, () => {

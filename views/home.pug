@@ -1,9 +1,9 @@
 extends base.pug
 block content 
-    if (isAdmin)
-        h2 Welcome admin 
-    else if (isUser)
-        h2= message
-    else 
-        div.container.d-flex.justify-content-center.align-items-center.my-5
-            h1  Welcome to my first backend web.....
+    div.container.d-flex.justify-content-center.align-items-center.my-5
+        if (isAdmin)
+            h2 Welcome admin 
+        else if (isUser)
+            h2= message
+        else 
+                h1  Welcome to my first backend web.....

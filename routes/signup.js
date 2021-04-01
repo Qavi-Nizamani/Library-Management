@@ -1,4 +1,5 @@
 const express = require("express");
+const wrapAsync = require("../util/wrapAsync");
 const User = require("../models/users");
 const router = express.Router();
 
@@ -7,15 +8,17 @@ router.get("/", (req, res) => {
 });
 
 //Post methods
-router.post("/", async (req, res) => {
-  try {
+router.post(
+  "/",
+  wrapAsync(async (req, res) => {
     const user = new User(req.body);
-    await user.save();
-
-    res.status(201).render("login");
-  } catch (error) {
-    res.render("signup");
-  }
-});
+    const saved = await user.save();
+    if (saved) {
+      res.status(201).render("login");
+    } else {
+      res.render("signup");
+    }
+  })
+);
 
 module.exports = router;

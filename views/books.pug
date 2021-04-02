@@ -27,9 +27,20 @@ block content
                         th(scope='col') Book
                         th(scope='col') Auther
                         th(scope='col') Language
+                        if(isAdmin)
+                            th(scope='col') Actions
                 tbody#tBody
+                each book in books
+                    tr 
+                        td=book.bookName
+                        td=book.bookAuther
+                        td=book.language
+                        if(isAdmin)
+                            td
+                                form.needs-validation(action= "/books/got", method="PATCH",novalidate)
+                                    button(type="submit") X
 
 //- bootstrap and custom scripts
 block scripts
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-    script(src="../static/js/books.js") 
+    script(src="../static/js/validation.js") 

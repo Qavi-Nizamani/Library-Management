@@ -18,6 +18,7 @@ const booksRoute = require("./routes/books");
 mongoose.connect(process.env.DB_CONNECTION, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 });
 
 //EXPRESS SPECIFIC

@@ -17,7 +17,8 @@ block content
                     label.form-label(for='language') Language
                     input#language.form-control(type='text', name="language" , required)
                 .d-flex.col-md-3.text-center.justify-content-center.align-items-center
-                    button#addBook.btn.btn-primary(type='submit') Submit
+                    button#addBook.btn.btn-primary(type='submit',style="margin-top: 32px;") Add Book
+            hr(style="width: 97%; margin: 10px auto;")
         //- Table to show all the books
         .container.text-center 
             h2 All Books
@@ -36,9 +37,8 @@ block content
                         td=book.bookAuther
                         td=book.language
                         if(isAdmin)
-                            td
-                                form.needs-validation(action= "/books/got", method="PATCH",novalidate)
-                                    button(type="submit") X
+                            td  
+                                a.btn.btn-primary(href="/books/"+book._id) Edit
 
 //- bootstrap and custom scripts
 block scripts

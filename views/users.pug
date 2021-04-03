@@ -12,6 +12,7 @@ block content
                             th(scope='col') Phone
                             th(scope='col') Email
                             th(scope='col') Address
+                            th(scope='col') Action
 
                     tbody#tBody
                     each user in users 
@@ -20,6 +21,8 @@ block content
                             td= user.phone
                             td= user.email
                             td= user.address
+                            td  
+                                a.btn.btn-primary(href="/users/"+user._id) Edit
 
 //- bootstrap and custom scripts
 block scripts

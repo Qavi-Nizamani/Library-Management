@@ -13,10 +13,14 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// router.get("/getUsers", (req, res) => {
-//   User.find({}, { name: 1, phone: 1, email: 1, address: 1 }, (err, data) => {
-//     res.json(data);
-//   });
-// });
+router.get("/:id", auth, async (req, res) => {
+  if (req.user.isAdmin) {
+    const user = await User.findById({ _id: req.params.id });
+    let params = { isAdmin: true, user: user };
+    res.status(200).render("showUser", params);
+  } else {
+    res.status(404).send(`<strong>Error 404: Page Not Found</strong>`);
+  }
+});
 
 module.exports = router;

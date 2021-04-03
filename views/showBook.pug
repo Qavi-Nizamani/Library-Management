@@ -1,0 +1,17 @@
+extends base.pug
+block content 
+    section.container.my-4
+        if(isAdmin)
+            form#myForm.row.needs-validation.container.my-2(action="/books/" + books._id, method="POST",novalidate)
+                .col-md-3
+                    label.form-label(for='bookName') Book Name
+                    input#bookName.form-control(type='text', name="bookName", aria-describedby='emailHelp' ,value = books.bookName ,  required)
+                .col-md-3
+                    label.form-label(for='bookAuther') Auther
+                    input#bookAuther.form-control(type='text', name="bookAuther" ,value = books.bookAuther ,  required)
+                .col-md-3
+                    label.form-label(for='language') Language
+                    input#language.form-control(type='text', name="language" ,value = books.language , required)
+                .d-flex.col-md-3.text-center.justify-content-center.align-items-center
+                    button#addBook.btn.btn-primary(type='submit' , style="margin-top: 32px;") Update
+        a(href="/books") Go to all books

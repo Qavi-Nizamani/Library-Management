@@ -1,36 +1,52 @@
 extends base.pug
 block content
-    form.row.g-3.needs-validation.mx-5.my-5(action="/signup" ,method="POST" ,novalidate='')
-        .col-md-4
+    link(rel="stylesheet", href="../static/css/signup.css")
+    form#signupForm.row.g-3.needs-validation(action="/signup" ,method="POST" ,novalidate='')
+        p#errorMessage.red= message
+        h3 Sign Up
+        #inputUserName.col-md-6
+            label.form-label(for='username') User Name
+            input#username.form-control(type='text', name="username", placeholder="Write a strong password" ,required='')
+            .invalid-feedback
+                | Please provide a username.
+        #inputName.col-md-6
             label.form-label(for='name') Name
-            input#name.form-control(type='text', name="name", value='Mark', required='')
-            .valid-feedback
-                | Looks good!
-        .col-md-4
+            input#name.form-control(type='text', name="name", placeholder='Enter Your Name.', required='')
+            .invalid-feedback
+                | Enter your name.
+        #inputPhone.col-md-6
             label.form-label(for='phone') Phone
-            input#phone.form-control(type='text', name="phone", value='Otto', required='')
-            .valid-feedback
-                | Looks good!
+            input#phone.form-control(type='text', name="phone", placeholder='e.g: 03331122333', required='')
+            .invalid-feedback
+                | Enter your mobile number.
         .col-md-6
             label.form-label(for='email') Email
-            .input-group.has-validation
+            #inputEmail.input-group.has-validation
                 span#inputGroupPrepend.input-group-text @
-                input#email.form-control(type='email', name="email" ,aria-describedby='inputGroupPrepend', required='')
-            .invalid-feedback
-                | Please choose a username.
-        .col-md-6
+                input#email.form-control(type='email', name="email" ,placeholder="xyz@xyz.com",aria-describedby='inputGroupPrepend', required='')
+                .invalid-feedback
+                    | Please provide your email.
+        #inputAddress.col-md-6
             label.form-label(for='address') Address
             input#address.form-control(type='text', name="address" ,required='')
             .invalid-feedback
-                | Please provide a valid city.
-        .col-md-6
+                | Please provide a valid address.
+        #inputPassword.col-md-6
             label.form-label(for='password') Password
-            input#password.form-control(type='text', name="password" ,required='')
+            input#password.form-control(type='text', name="password", placeholder="Write a strong password" ,required='')
             .invalid-feedback
-                | Please provide a valid city.
+                | Please provide a password.
+        #inputPassword.col-md-6
+            label.form-label(for='confirmPassword') Confirm Password
+            input#confirmPassword.form-control(type='text', name="confirmPassword", placeholder="Write a strong password" ,required='')
+            .invalid-feedback
+                | Please provide a password.
         .col-12
-            button.btn.btn-primary(type='submit') Submit form
+            button#btnSignUp.btn.btn-primary(type='submit') Sign Up
+            a.btn.btn-primary(aria-current='page', href='/login') Login 
 //- bootstrap and custom scripts
 block scripts
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     script(src="../static/js/validation.js") 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    script(src="../static/js/signup.js") 

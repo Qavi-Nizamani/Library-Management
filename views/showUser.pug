@@ -1,8 +1,73 @@
 extends base.pug
 block content 
     .container 
-        if(isAdmin)
-            ul 
-                li= user.name 
-                li= user.email 
-                li= user.address
+        //- ONLY ALLOW THE CONTENT IF THE USER IS ADMIN..
+        form#signupForm.row.g-3.needs-validation(action="/signup" ,method="POST" ,novalidate='')
+            p#errorMessage.red= message
+            h3 Update Your Profile
+            #inputUserName.col-md-6
+                label.form-label(for='username') User Name
+                input#username.form-control(type='text', name="username", value= user.username ,required='')
+                .invalid-feedback
+                    | Please provide a username.
+            #inputName.col-md-6
+                label.form-label(for='name') Name
+                input#name.form-control(type='text', name="name", value=user.name, required='')
+                .invalid-feedback
+                    | Enter your name.
+            #inputPhone.col-md-6
+                label.form-label(for='phone') Phone
+                input#phone.form-control(type='text', name="phone", value=user.phone, required='')
+                .invalid-feedback
+                    | Enter your mobile number.
+            .col-md-6
+                label.form-label(for='email') Email
+                #inputEmail.input-group.has-validation
+                    span#inputGroupPrepend.input-group-text @
+                    input#email.form-control(type='email', name="email" ,value=user.email,aria-describedby='inputGroupPrepend', required='')
+                    .invalid-feedback
+                        | Please provide your email.
+            #inputAddress.col-md-6
+                label.form-label(for='address') Address
+                input#address.form-control(type='text', name="address" value=user.address,required='')
+                .invalid-feedback
+                    | Please provide a valid address.
+
+            .col-12
+                button#btnSignUp.btn.btn-primary(type='submit') Update
+
+            form#myForm.row.needs-validation.container.my-2
+                .col-md-3
+                    label.form-label(for='bookName') Book Name
+                    input#bookName.form-control(type='text',name="bookName", aria-describedby='emailHelp' , required)
+                //- .col-md-3
+                //-     label.form-label(for='bookAuther') Auther
+                //-     input#bookAuther.form-control(type='text',name="bookAuther" , required)
+                //- .col-md-3
+                //-     label.form-label(for='language') Language
+                //-     input#language.form-control(type='text',name="language" , required)
+                .d-flex.col-md-3.text-center.justify-content-center.align-items-center
+                    button#btnSearchBook.btn.btn-primary(type='submit',style="margin-top: 32px;") Search Book        
+                    a.btn.btn-primary(href="/users/"+userData._id+"/books",style="margin-top: 32px; margin-left: 20px;") Issued Books
+
+            //- SHOWING SEARCHED BOOKS
+            .container.text-center 
+                h2 Search Result
+                table.my-2.table.table-light.table-striped
+                    thead
+                        tr
+                            th(scope='col') Book
+                            th(scope='col') Auther
+                            th(scope='col') Language
+                            th(scope='col') Actions
+                    tbody#tBody
+                    each book in books
+                        tr 
+                            td=book.bookName
+                            td=book.bookAuther
+                            td=book.language
+                            td  
+                                form(action="/users/"+userData._id+"/books/"+book._id, method="post") 
+                                    button(type="submit")  Issue Book
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    script(src="../static/js/books.js")

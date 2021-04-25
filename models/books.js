@@ -13,5 +13,14 @@ const booksSchema = new mongoose.Schema({
     type: String,
     requried: true,
   },
+  details: String,
+  bookImg: String,
+  comments: [
+    {
+      comment: {
+        type: String,
+      },
+    },
+  ],
 });
 module.exports = mongoose.model("Book", booksSchema);

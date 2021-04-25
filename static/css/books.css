@@ -1,3 +1,7 @@
+.bg-common {
+  background-color: #f0f8ffb6;
+  padding: 20px;
+}
 #addBook {
   margin-top: 30px;
 }

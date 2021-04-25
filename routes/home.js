@@ -1,20 +1,22 @@
 const express = require("express");
 const AppError = require("../middleware/AppError");
 const router = express.Router();
-const auth = require("../middleware/auth");
+const { auth } = require("../middleware/auth");
+const books = require("../models/books");
 
-router.get("/", auth, (req, res) => {
+//GET HOME PAGE
+router.get("/", auth, async (req, res) => {
   try {
-    if (req.user.isAdmin) {
-      let params = { notLoggedIn: false, isAdmin: true };
-      res.status(200).render("home", params);
+    if (req.user) {
+      const book = await books.find({});
+      res.render("home", {
+        books: book,
+      });
     } else {
-      let params = { isUser: true, message: "", notLoggedIn: false }; // else this is normal user
-      params.message = `Welcome ${req.user.name.toUpperCase()} To my First Backend Website `;
-      res.status(200).render("home", params);
+      res.redirect("/login");
     }
   } catch (error) {
-    console.log("tokenError");
+    console.log(error);
   }
 });
 

@@ -1,0 +1,28 @@
+extends base.pug
+block content 
+    .container 
+
+
+            //- SHOWING SEARCHED BOOKS
+            .container.text-center.my-5
+                h3 Books
+                table.my-2.table.table-light.table-striped
+                    thead
+                        tr
+                            th(scope='col') Book
+                            th(scope='col') Auther
+                            th(scope='col') Language
+                            th(scope='col') Issue Date
+                            if(user.isAdmin)
+                                th(scope='col') Actions
+                    tbody#tBody
+                    each book in books
+                        tr 
+                            td=book.book.bookName
+                            td=book.book.bookAuther
+                            td=book.book.language
+                            td=book.book.issueDate
+                            if(user.isAdmin)
+                                td  
+                                    form(action="/users/"+userData._id+"/books/"+book._id+"?_method=delete", method="post") 
+                                        button(type="submit")  Remove Book

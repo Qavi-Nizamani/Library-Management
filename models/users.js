@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-
+const joi = require("joi");
+const bcrypt = require("bcrypt");
+const passportLocalMongoose = require("passport-local-mongoose");
 const usersSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -19,11 +21,39 @@ const usersSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
+  // password: {
+  //   type: String,
+  //   required: true,
+  //   min: 8,
+  // },
   isAdmin: Boolean,
+  books: [
+    {
+      book: {
+        bookName: {
+          type: String,
+          requried: true,
+        },
+        bookAuther: {
+          type: String,
+          requried: true,
+          min: 6,
+        },
+        language: {
+          type: String,
+          requried: true,
+        },
+        issueDate: {
+          type: Date,
+          default: Date.now,
+        },
+        returnDate: {
+          type: Date,
+          requried: true,
+        },
+      },
+    },
+  ],
   tokens: [
     {
       token: {
@@ -34,6 +64,51 @@ const usersSchema = new mongoose.Schema({
   ],
 });
 
+//USER PLUGINS
+usersSchema.plugin(passportLocalMongoose);
+
+//USER VALIDATION
+usersSchema.statics.userValidate = async function (user) {
+  try {
+    const userSchema = joi
+      .object({
+        username: joi.string().required().min(2),
+        name: joi.string().required().min(2),
+        phone: joi.number().required().min(3000000000),
+        email: joi.string().required(),
+        address: joi.string().required(),
+        password: joi.string().required().min(8),
+        confirmPassword: joi.string().required().min(8),
+      })
+      .required();
+    const passwordMatch = user.password === user.confirmPassword ? true : false;
+    const validation = await userSchema.validate(user);
+
+    if (!validation.error && passwordMatch) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("uservalidation" + error);
+  }
+};
+//HASHING PASSWORD ON SAVE USER DATA
+usersSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 12);
+  this.confirmPassword = await bcrypt.hash(this.confirmPassword, 12);
+  next();
+});
+
+//USER VALIDATION
+usersSchema.statics.findAndValidate = async function (email, password) {
+  const user = await this.findOne({ email });
+  const isValid = await bcrypt.compare(password, user.password);
+  return isValid ? user : false;
+};
+
+//METHOD TO GENERATE AUTHENTICATION TOKEN FOR VERIFICATION
 usersSchema.methods.generateAuthToken = async function () {
   try {
     const token = await jwt.sign(
@@ -42,8 +117,9 @@ usersSchema.methods.generateAuthToken = async function () {
     );
 
     await jwt.verify(token, "iamfrombaqarnizamanilovetoplayfootball");
-    this.tokens = this.tokens.concat({ token: token });
+    this.tokens.push({ token: token });
     await this.save();
+    console.log(token);
     return token;
   } catch (error) {
     console.log("the error is: " + error);

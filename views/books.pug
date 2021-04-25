@@ -1,26 +1,32 @@
 extends base.pug
 block content 
-    if (isAdmin)
-    else if (isUser)
-        h2= message
+    link(rel="stylesheet", href="../static/css/books.css")
     //- Section for adding a new book 
-    section.container.my-4
-        if(isAdmin)
-            form#myForm.row.needs-validation.container.my-2(action="/books", method="post",novalidate)
-                .col-md-3
-                    label.form-label(for='bookName') Book Name
-                    input#bookName.form-control(type='text', name="bookName", aria-describedby='emailHelp' , required)
-                .col-md-3
-                    label.form-label(for='bookAuther') Auther
-                    input#bookAuther.form-control(type='text', name="bookAuther" , required)
-                .col-md-3
-                    label.form-label(for='language') Language
-                    input#language.form-control(type='text', name="language" , required)
-                .d-flex.col-md-3.text-center.justify-content-center.align-items-center
-                    button#addBook.btn.btn-primary(type='submit',style="margin-top: 32px;") Add Book
-            hr(style="width: 97%; margin: 10px auto;")
+    section.bg-common.container.my-4
+        if(user)
+            if(user.isAdmin)
+                form#myForm.row.needs-validation.container.my-2(action="/books?_method=PUT", method="post",novalidate)
+                    .col-md-3
+                        label.form-label(for='bookName') Book Name
+                        input#bookName.form-control(type='text', name="bookName", aria-describedby='emailHelp' , required)
+                    .col-md-3
+                        label.form-label(for='bookAuther') Auther
+                        input#bookAuther.form-control(type='text', name="bookAuther" , required)
+                    .col-md-3
+                        label.form-label(for='language') Language
+                        input#language.form-control(type='text', name="language" , required)
+                    .col-md-3
+                        label.form-label(for='bookImg') bookImg
+                        input#bookImg.form-control(type='text', name="bookImg" , required)
+                    .input-group.my-2
+                        span.input-group-text Details
+                        textarea.form-control(aria-label='With textarea',name="details",id="details")
+                    div 
+                        button#addBook.btn.btn-primary(type='submit',style="margin-top: 10px;") Add Book
+                hr(style="width: 97%; margin: 10px auto;")
         //- Table to show all the books
-        .container.text-center 
+        .container.text-center.my-5
+            include ./partials/flash.pug
             h2 All Books
             table.my-2.table.table-light.table-striped
                 thead
@@ -28,7 +34,7 @@ block content
                         th(scope='col') Book
                         th(scope='col') Auther
                         th(scope='col') Language
-                        if(isAdmin)
+                        if(user.isAdmin)
                             th(scope='col') Actions
                 tbody#tBody
                 each book in books
@@ -36,7 +42,7 @@ block content
                         td=book.bookName
                         td=book.bookAuther
                         td=book.language
-                        if(isAdmin)
+                        if(user.isAdmin)
                             td  
                                 a.btn.btn-primary(href="/books/"+book._id) Edit
 

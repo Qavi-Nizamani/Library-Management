@@ -1,0 +1,9 @@
+#booksSection {
+  margin: 10px auto;
+  padding: 50px;
+  row-gap: 20px;
+}
+.bg-common {
+  background-color: #f0f8ffb6;
+  padding: 20px;
+}

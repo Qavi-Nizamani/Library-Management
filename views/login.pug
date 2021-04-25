@@ -1,11 +1,13 @@
 extends base.pug
 block content
-    form.my-2.mx-5.needs-validation(action="/login" method="POST", novalidate)
-        div
-            p.red= error
+    link(rel="stylesheet", href="../static/css/login.css")
+    form#loginForm.needs-validation(action="/login" method="POST", novalidate)
+        #errorMessage(style="color: red; margin-bottom: 2px;")
+        include ./partials/flash.pug
+        h3.loginFormName Login Form
         .mb-3
-            label.form-label(for='email') Email address
-            input#email.form-control(type='email' , name="email", aria-describedby='emailHelp' required)
+            label.form-label(for='username') username address
+            input#username.form-control(type='username' , name="username", aria-describedby='emailHelp' required)
             #emailHelp.form-text We&apos;ll never share your email with anyone else.
         .mb-3
             label.form-label(for='password') Password
@@ -14,7 +16,11 @@ block content
             input#types.form-check-input(type='checkbox')
             label.form-check-label(for='types') Save Password
         button.btn.btn-primary(type='submit') Login
+    
+        a.btn.btn-primary(aria-current='page', href='/signup') Sign Up 
 //- bootstrap and custom scripts
 block scripts
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     script(src="../static/js/validation.js") 
+    script(src="../static/js/login.js") 

@@ -1,8 +1,10 @@
 extends base.pug
 block content 
-    section.container.my-4
-        if(isAdmin)
-            form#myForm.row.needs-validation.container.my-2(action="/books/" + books._id, method="POST",novalidate)
+    link(rel="stylesheet", href="../static/css/books.css")
+    section.bg-common.container.my-4
+        if(user.isAdmin)
+            //- UPDATE A BOOK
+            form#myForm.row.needs-validation.container.my-2(action="/books/"+books._id+"?_method=patch",method="POST",novalidate)
                 .col-md-3
                     label.form-label(for='bookName') Book Name
                     input#bookName.form-control(type='text', name="bookName", aria-describedby='emailHelp' ,value = books.bookName ,  required)
@@ -12,6 +14,34 @@ block content
                 .col-md-3
                     label.form-label(for='language') Language
                     input#language.form-control(type='text', name="language" ,value = books.language , required)
+                .col-md-3
+                    label.form-label(for='bookImg') bookImg
+                    input#bookImg.form-control(type='text', name="bookImg" ,value=books.bookImg)
+                .input-group.my-2
+                    span.input-group-text Details
+                    textarea.form-control(aria-label='With textarea',name="details",id="details")=books.details
+                .d-flex.col-md-3.text-left.justify-content-left.align-items-left
+                    button#btnUpdateBook.btn.btn-primary(type='submit' ) Update
+
+            //- DELETE A BOOK
+            form#myForm.row.needs-validation.container.my-2(action="/books/"+books._id+"?_method=DELETE",method="POST",novalidate)
+                .d-flex.col-md-3.text-right.justify-content-right.align-items-right
+                    button#btnDeleteBook.btn.btn-primary(type='submit') Delete
+
+            //- ADD A COMMENT ON A BOOK
+            form#myForm.row.needs-validation.container.my-2(action="/books/" + books._id+ "/comments", method="POST",novalidate)
+                .col-md-3
+                    label.form-label(for='comment') Comment
+                    input#comment.form-control(type='text', name="comment" ,placeholder="Enter a comment!" , required)
+
                 .d-flex.col-md-3.text-center.justify-content-center.align-items-center
-                    button#addBook.btn.btn-primary(type='submit' , style="margin-top: 32px;") Update
-        a(href="/books") Go to all books
+                    button#addBook.btn.btn-primary(type='submit' , style="margin-top: 32px;") Submit
+
+        //- SHOW ALL COMMENTS ON THE BOOK
+        .container 
+            a(href="/books") Go to all books
+            h4 Comments on this Book!
+            ul 
+                each comments in books.comments 
+                    li= comments.comment
+
